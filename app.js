@@ -28,8 +28,14 @@ app.use(
     saveUninitialized: true,
   })
 );
+// mongoose.connect("mongodb://127.0.0.1/blogger001");
+// var db = mongoose.connection;
+// db.on(
+//   "error",
+//   console.error.bind("mongondb connection error for blogger project")
+// );
 
-mongoose.connect("mongodb://127.0.0.1/blogger001");
+mongoose.connect("mongodb+srv://zai:linhtet@cluster0.ngdtul0.mongodb.net/?retryWrites=true&w=majority");
 var db = mongoose.connection;
 db.on(
   "error",
