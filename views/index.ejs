@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html data-theme="gerden">
+  <head>
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@2.19.1/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+      <% include ./partials/navbar %>
+  </head>
+  <body>
+    <div class="text-center">
+      <p>Welcome to <%= locals.user ? locals.user.name : 'unknow user' %></p>
+    </div>
+    <div class="text-center text-info ">
+      <h1>POPULAR NOW POSTS</h1>
+    </div>
+    <% for(var i=0; i< morelike.length; i++) {%>
+    <div class="card w-80 glass shadow-2xl inline-block m-5">
+      <figure>
+        <img src="<%= morelike[i].image %>" alt="<%= morelike[i].title %>" class="h-45"/>
+      </figure>
+      <div class="card-body">
+        <h2 class="card-title"><%= morelike[i].author[0].name %> </h2>
+        <h4 class="text-lg"><%= morelike[i].title %></h4>
+        <p class="text-sm"><%= morelike[i].content %></p>
+        <div class="card-actions justify-end">
+          <a
+            href="/postdetails/<%= morelike[i]._id%>"
+            class="btn btn-outline btn-primary"
+            >DETAIlS
+          </a>
+        </div>
+      </div>
+    </div>
+    <%}%>
+
+    <div class="text-center text-info ">
+      <h1>MOST COMMENT POSTS</h1>
+    </div>
+    <% for(var i=0; i< morecomment.length; i++) {%>
+    <div class="card w-80 glass shadow-2xl inline-block m-5">
+      <figure>
+        <img src="<%= morecomment[i].post[0].image %>" alt="<%= morecomment[i].post[0].title %>" class="h-45"/>
+      </figure>
+      <div class="card-body">
+        <h2 class="card-title"><%= morecomment[i].post[0].author %> </h2>
+        <h4 class="text-lg"><%= morecomment[i].post[0].title %></h4>
+        <p class="text-sm"><%= morecomment[i].post[0].content %></p>
+        <div class="card-actions justify-end">
+          <a
+            href="/postdetails/<%= morecomment[i].post[0]._id%>"
+            class="btn btn-outline btn-primary"
+            >DETAIlS
+          </a>
+        </div>
+      </div>
+    </div>
+    <%}%>
+  </body>
+</html>

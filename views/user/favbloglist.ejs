@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="black">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@2.19.1/dist/full.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>post list</title>
+  </head>
+  <body>
+    <% include ../partials/navbar %>
+    <div class="text-center text-success">
+      <h1>MY POSTS</h1>
+    </div>
+    <% for(var i=0; i< posts.length; i++) {%>
+    <div class="card w-80 glass shadow-2xl inline-block m-5">
+      <figure>
+        <img src="<%= posts[i].image %>" alt="<%= posts[i].title %>" class="h-45"/>
+      </figure>
+      <div class="card-body">
+        <h2 class="card-title"><%= posts[i].author.name %></h2>
+        <h4 class="text-lg"><%= posts[i].author.title %></h4>
+        <p class="text-sm"><%= posts[i].content %></p>
+        <div class="card-actions justify-center">
+          
+          <a
+            href="/postdetails/<%= posts[i]._id%>"
+            class="btn btn-outline btn-primary w-28 btn-sm"
+            >postdetail</a
+          >
+          
+        </div>
+      </div>
+    </div>
+    <%}%>
+  </body>
+</html>

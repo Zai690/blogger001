@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="luxury">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@2.19.1/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>post datail</title>
+</head>
+<body>
+  <% include ../partials/navbar %>
+  <div class="flex font-sans">
+      <div class="flex-none w-48 relative">
+        <img src="<%= posts.image %>" alt="" class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+      </div>
+      <div class="flex-auto p-6">
+        <div class="flex flex-wrap">
+          <h1 class="flex-auto text-lg font-semibold text-slate-900">
+              <%= posts.author.name %>
+          </h1>
+          <div class="w-full flex-none text-sm font-medium text-slate-700 mt-2">
+              <%= posts.title %>
+          </div>
+        </div>
+        <div class="flex items-baseline mt-4 mb-6 pb-6 border-b border-slate-200">
+          <div class="space-x-2 flex text-sm">
+            <label>
+              <input class="sr-only peer" name="size" type="radio" value="xs" checked />
+              <%= posts.content %>
+            </label>
+            </label>
+          </div>
+        </div>
+          
+          <% if(locals.user){%>
+          <textarea class="textarea textarea-bordered" placeholder="comment" rows="3" cols="35" id="comment"></textarea>
+          <div class="flex space-x-4 mb-6 text-sm font-medium">
+              <div class="flex-auto flex space-x-4"><button onclick="givecomment('<%= posts._id %>','<%= posts.author._id %>')" class="h-10 px-6 font-semibold rounded-md bg-black text-white" value="login">
+                  comment
+                 </button>
+                </div>
+                <%}else{%>
+                  <div class="flex mt-2">
+                      <span class="my-auto mr-5">Please login or register for comment </span>
+                  </div>
+                  <p class="text-lg text-primary-focus">
+                      Give comment
+                    </p>
+          <div class="flex space-x-4 mb-6 text-sm font-medium">
+              <div class="flex-auto flex space-x-4">
+                  <a href="/login">
+                <button class="h-10 px-6 font-semibold rounded-md bg-black text-white" value="login">
+                  LOGIN
+                </button>
+              </a>
+              <%}%>
+              </div>
+              <button class="flex-none flex items-center justify-center w-9 h-9 rounded-md text-slate-300 border border-slate-200" type="button" aria-label="Like"> 
+                <svg width="20" height="20" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" />
+                </svg>
+              </button>
+          <span>Total like 567k+</span>
+        </div>
+      </div>
+    </div>
+    
+    <section class="text-gray-600 body-font p-5">
+      <%for (var i=0;i< comments.length; i++) {%>
+      <div class="px-5 py-3 mx-auto border-b border-black">
+        <div class="-my-8 divide-y-2 divide-gray-100">
+          <div class="py-8 flex flex-wrap md:flex-nowrap">
+             <div class="md:flex-grow">
+              <h2 class="text-2xl font-medium  divide-gray-100 title-font mb-2">
+                <%= comments[i].commenter.name %></h2>
+                <span id="time" hidden><%= comments[i].created %></span>
+              <h3><small class="create"></small></h3>
+              <p class="leading-relaxed text-base"><%= comments[i].comment %></p>
+            </div>
+          </div>        
+        </div>
+       </div>
+       
+       <%if (comments[i].reply) {%>
+        <div class="px-5 py-3 mx-auto border-b border-black">
+         <div class="-my-8 divide-y-2 divide-gray-100">
+           <div class="py-8 flex flex-wrap md:flex-nowrap">
+              <div class="md:flex-grow">
+               <h2 class="text-2xl font-medium title-font mb-2">
+                 <%= locals.user.name %> (Author)</h2>
+               <p class="leading-relaxed text-base"><%= comments[i].reply %></p>
+             </div>
+           </div>        
+         </div>
+        </div>
+        </section> 
+       <%} else {%>
+       <div class="flex justify-end">
+        <input type="hidden" value="<%= comments[i]._id %>">
+        <button class="repBtn btn btn-outline mr-3 btn-sm">REPLY</button>
+        <input type="text" placeholder="text here for reply" class="input input-ghost w-full max-w-xs input-sm"/>
+      </div>
+      <%}%>
+    </div>
+    <%}%>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+</script>
+<script>
+  $(".repBtn").click(function(){
+    console.log($(this).parents()[0].children[2].value)
+    const data={
+      comment: $(this).parents()[0].children[0].value,
+      reply: $(this).parents()[0].children[2].value,
+    };
+    $.ajax({
+      url:"/users/givereply",
+            type : "POST",
+            data: data, 
+        }).done((result)=>{
+            if (result.status == "error"){
+            alert("somethings was wrong");
+        }else{
+          location.reload()
+        };
+        });
+  });
+  var time = document.getElementById("time").value;
+  $(".create").append(moment(time).format("YYYY-MM-DD"));
+</script>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="business">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@2.19.1/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>post datail</title>
+</head>
+<body>
+    <% include ./partials/navbar %>
+    <div class="flex font-sans">
+        <div class="flex-none w-48 relative">
+          <img src="<%= posts.image %>" alt="" class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+        </div>
+        <div class="flex-auto p-6">
+          <div class="flex flex-wrap">
+            <h1 class="flex-auto  text-lg text-slate-200">
+                <%= posts.author.name %>
+
+            </h1>
+            <% if (locals.user) {%>
+              <% if (favStatus.length == 0) {%>
+                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" onclick="givefav('fav');" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                 </svg>
+                 <span>follow</span>
+                 <%}else{%>
+                 <svg onclick="givefav('unfav');" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 " viewBox="0 0 20 20" fill="currentColor" >
+                   <path fill-rule="evenodd" d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 10a1 1 0 011 1v1h1a1 1 0 110 2H6v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1zM12 2a1 1 0 01.967.744L14.146 7.2 17.5 9.134a1 1 0 010 1.732l-3.354 1.935-1.18 4.455a1 1 0 01-1.933 0L9.854 12.8 6.5 10.866a1 1 0 010-1.732l3.354-1.935 1.18-4.455A1 1 0 0112 2z" clip-rule="evenodd" />
+                 </svg>
+                 <span>Following</span>
+                 <%}%>
+                <%}%>
+             <div class="w-full flex-none text-sm font-medium text-slate-700 mt-2">
+                <%= posts.title %>
+             </div>
+             </div>
+              <div class="flex items-baseline mt-4 mb-6 pb-6 border-b border-slate-200">
+             <div class="space-x-2 flex text-sm">
+              <label>
+                <input class="sr-only peer" name="size" type="radio" value="xs" checked />
+                <%= posts.content %>
+              </label>
+              </label>
+            </div>
+          </div>
+            
+            <% if(locals.user){%>
+              
+            <textarea class="textarea textarea-bordered" placeholder="comment" rows="3" cols="35" id="comment"></textarea>
+            <div class="flex space-x-4 mb-6 text-sm font-medium">
+                <div class="flex-auto flex space-x-4"><button onclick="givecomment('<%= posts._id %>','<%= posts.author._id %>')" class="h-10 px-6 font-semibold rounded-md bg-black text-white" value="login">
+                    comment
+                   </button>
+                   <% if(reactStatus.length == 0) {%>
+                   <button class="flex-none flex items-center justify-center w-9 h-9 rounded-md text-slate-300 border border-slate-200" type="button"aria-label="Like" onclick="givelike('like');">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                    </svg>
+                  </button>
+                  <%}else{%>
+                    <button class="flex-none flex items-center justify-center w-9 h-9 rounded-md text-slate-300 border border-slate-200" type="button"aria-label="unLike" onclick="givelike('unlike');">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
+                    </svg>
+                    </button>
+                    <%}%>
+                  </div>
+                  <%}else{%>
+                    <div class="flex mt-2">
+                        <span class="my-auto mr-5">Please login or register for comment </span>
+                    </div>
+                    <p class="text-lg text-primary-focus">
+                        Give comment
+                      </p>
+            <div class="flex space-x-4 mb-6 text-sm font-medium">
+                <div class="flex-auto flex space-x-4">
+                    <a href="/login">
+                  <button class="h-10 px-6 font-semibold rounded-md bg-black text-white" value="login">
+                    LOGIN
+                  </button>
+                </a>
+                <%}%>
+                </div>
+            <span>Total like <%= posts.like.length %></span>
+          </div>
+        </div>
+      </div>
+      
+      <section class="text-gray-600 body-font p-5">
+        <%for (var i=0;i< comments.length; i++) {%>
+        <div class="px-5 py-3 mx-auto border-b border-black">
+          <div class="-my-8 divide-y-2 divide-gray-100">
+            <div class="py-8 flex flex-wrap md:flex-nowrap">
+               <div class="md:flex-grow">
+                <h2 class="text-2xl font-medium  divide-gray-100 title-font mb-2">
+                  <%= comments[i].commenter.name %></h2>
+                  <span id="time" hidden><%= comments[i].created %></span>
+                <h3><small class="create"></small></h3>
+                <p class="leading-relaxed text-base"><%= comments[i].comment %></p>
+              </div>
+            </div>        
+          </div>
+         </div>
+         
+         <%if (comments[i].reply) {%>
+          <div class="px-5 py-3 mx-auto border-b border-black">
+           <div class="-my-8 divide-y-2 divide-gray-100">
+             <div class="py-8 flex flex-wrap md:flex-nowrap">
+                <div class="md:flex-grow">
+                 <h2 class="text-2xl font-medium text-gray-900 title-font mb-2">
+                  <%= comments[i].author.name %> (Author)</h2>
+                 <p class="leading-relaxed text-base"><%= comments[i].reply %></p>
+               </div>
+             </div>        
+           </div>
+          </div>
+      </section> 
+    <%}%>
+      <%}%>
+
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+</script>
+<script>
+  function givecomment(post,author){
+    const data={post:post,author:author,comment:$("#comment").val()};
+    $.ajax({
+      url:"/users/givecomment",
+            type : "POST",
+            data: data, 
+        }).done((result)=>{
+            if (result.status == "error"){
+            alert("somethings was wrong");
+            $("#comment").val("");
+            $("#comment").focus();
+        }else{
+          location.reload()
+        }
+        });
+  }
+  function givelike(type){
+    const data={ action: type, pid:"<%= posts._id %>"};
+    $.ajax({
+      url:"/users/givelike",
+            type : "POST",
+            data: data, 
+        }).done((result)=>{
+            if (result.status == "error"){
+            alert("somethings was wrong");
+        }else{
+          location.reload()
+        }
+        });
+  }
+  function givefav(type){
+    const data={ action: type, aid:"<%= posts.author._id %>"};
+    console.log(data)
+    $.ajax({
+      url:"/users/givefav",
+            type : "POST",
+            data: data, 
+        }).done((result)=>{
+            if (result.status == "error"){
+            alert("somethings was wrong");
+        }else{
+          location.reload()
+        }
+        });
+      }
+  var time = document.getElementById("time").value;
+  $(".create").append(moment(time).format("YYYY-MM-DD"));
+  console.log("<%= locals.user %> ")
+</script>
+</html>

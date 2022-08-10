@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@2.19.1/dist/full.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>post update</title>
+</head>
+<body>
+    <% include ../partials/navbar %>
+    <div class="flex place-content-center">
+      <div class="flex justify-center border w-80">
+        <div class="m-8">
+          <div>
+            <h1 class="text-center text-xl">Post update</h1>
+            <br />
+
+            <form
+              action="/users/postupdate"
+              method="post"
+              enctype="multipart/form-data"
+            >
+            <input type="hidden" name="id" value="<%= post._id%>">
+              <label for="title">What are you up to?</label> <br />
+              <input
+                type="text"
+                placeholder="Type here"
+                class="input input-bordered input-info w-full max-w-xs"
+                name="title"
+                class="input input-bordered input-info w-full max-w-xs" value="<%= post.title %>"
+              /><br /><br />
+              <label for="content">CONTENT</label> <br />
+              <textarea
+                name="content"
+                id="content"
+                cols="30"
+                rows="10"
+                class="input input-bordered input-info h-20"
+              ><%= post.content %></textarea
+              ><br/ ><br/ > <label for="photo">Add a photo</label> <br />
+              <input
+                type="file"
+                name="photo"
+                id="photo"
+                accept="image/*"
+                class="file:btn file:input-info"
+              />
+              <br /><br />
+              <div class="flex justify-center">
+                <input
+                  type="submit"
+                  value="Add"
+                  class="text-blue-400 btn outline"
+                />
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+</body>
+</html>
